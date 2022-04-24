@@ -20,7 +20,7 @@ export class UsersService implements OnModuleInit {
   })
   private client: ClientKafka;
   async onModuleInit() {
-    const requestPatters = ['find-all-user', 'find-user'];
+    const requestPatters = ['find-all-user', 'find-user', 'create-user'];
 
     requestPatters.forEach(async (pattern) => {
       this.client.subscribeToResponseOf(pattern);
@@ -28,8 +28,8 @@ export class UsersService implements OnModuleInit {
     });
   }
 
-  create(createUser: User) {
-    return this.client.emit('create-user', createUser);
+  create(createUser: User): Observable<User> {
+    return this.client.send('create-user', createUser);
   }
 
   findAll(): Observable<User[]> {
