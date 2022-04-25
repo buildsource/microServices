@@ -2,7 +2,6 @@ import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { UserEntity } from './entities/user.entity';
-import { IUser } from './interfaces/user.interface';
 
 @Controller()
 export class AppController {
@@ -23,8 +22,8 @@ export class AppController {
   }
 
   @MessagePattern('find-user')
-  async find(@Payload() data: any): Promise<IUser> {
-    return await this.appService.findOne(Number(data.value.id));
+  async find(@Payload() data: any): Promise<UserEntity | any> {
+    return JSON.stringify(await this.appService.findOne(Number(data.value.id)));
   }
 
   @MessagePattern('update-user')

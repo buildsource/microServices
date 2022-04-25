@@ -1,8 +1,8 @@
 import { PhoneDto } from './dto/phone.dto';
 import { EmailDto } from './dto/email.dto';
+import { Observable } from 'rxjs';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class NotificationService implements OnModuleInit {
@@ -10,11 +10,11 @@ export class NotificationService implements OnModuleInit {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: 'user',
+        clientId: 'notification',
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'user-consumer',
+        groupId: 'notification-consumer',
         allowAutoTopicCreation: true,
       },
     },
@@ -22,7 +22,7 @@ export class NotificationService implements OnModuleInit {
   private client: ClientKafka;
 
   async onModuleInit() {
-    const requestPatters = ['find-all-user', 'find-user', 'create-user'];
+    const requestPatters = [];
 
     requestPatters.forEach(async (pattern) => {
       this.client.subscribeToResponseOf(pattern);
@@ -35,6 +35,6 @@ export class NotificationService implements OnModuleInit {
   }
 
   sendPhone(data: PhoneDto): Observable<PhoneDto> {
-    return this.client.emit('notification-sms', data);
+    return this.client.emit('notification-phone', data);
   }
 }
