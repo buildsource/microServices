@@ -75,3 +75,19 @@ services:
       - user-engine
     networks:
       - broker_network
+
+  
+  book-engine:
+    build:
+      context: ./book-engine
+      dockerfile: Dockerfile.dev
+    container_name: book_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    depends_on:
+      - notification-engine
+    networks:
+      - broker_network
