@@ -22,10 +22,12 @@ export class UsersService implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     const requestPatters = ['find-all-user', 'find-user', 'create-user'];
 
-    requestPatters.forEach(async (pattern) => {
-      this.client.subscribeToResponseOf(pattern);
+    if (requestPatters.length > 0) {
+      requestPatters.forEach(async (pattern) =>
+        this.client.subscribeToResponseOf(pattern),
+      );
       await this.client.connect();
-    });
+    }
   }
 
   async onModuleDestroy() {

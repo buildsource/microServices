@@ -24,10 +24,12 @@ export class NotificationService implements OnModuleInit {
   async onModuleInit() {
     const requestPatters = [];
 
-    requestPatters.forEach(async (pattern) => {
-      this.client.subscribeToResponseOf(pattern);
+    if (requestPatters.length > 0) {
+      requestPatters.forEach(async (pattern) =>
+        this.client.subscribeToResponseOf(pattern),
+      );
       await this.client.connect();
-    });
+    }
   }
 
   sendEmail(data: EmailDto): Observable<EmailDto> {
