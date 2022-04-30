@@ -11,7 +11,7 @@ export class NotificationService implements OnModuleInit {
     options: {
       client: {
         clientId: 'notification',
-        brokers: ['localhost:9092'],
+        brokers: ['172.17.0.1:9092'],
       },
       consumer: {
         groupId: 'notification-consumer',

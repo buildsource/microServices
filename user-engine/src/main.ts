@@ -13,7 +13,7 @@ async function bootstrap() {
       options: {
         client: {
           clientId: 'user',
-          brokers: ['localhost:9092'],
+          brokers: ['172.17.0.1:9092'],
         },
         consumer: {
           groupId: 'user-consumer',
