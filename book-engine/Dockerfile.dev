@@ -6,8 +6,8 @@ FROM base AS dependencies
 
 COPY ./package*.json ./
 
-RUN npm install
+RUN yarn install
 
 COPY ./ .
 
-ENTRYPOINT ["npm","run","start:dev"]
+ENTRYPOINT ["yarn","start:dev"]
