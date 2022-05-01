@@ -38,6 +38,7 @@ services:
     command: yarn start
     environment:
       NODE_ENV: staging
+      PORT: 8999
     ports:
       - '8999:8999'
     networks:

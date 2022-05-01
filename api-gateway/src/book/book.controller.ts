@@ -31,10 +31,7 @@ export class BookController {
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: number,
-    @Body() { name, abstract, author }: Book,
-  ) {
+  update(@Param('id') id: number, @Body() { name, abstract, author }: Book) {
     const payload: Book = {
       id,
       name,
