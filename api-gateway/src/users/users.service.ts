@@ -61,4 +61,8 @@ export class UsersService implements OnModuleInit, OnModuleDestroy {
   inactivate(id: number) {
     return this.client.emit('inactivate-user', { id });
   }
+
+  validateUser(email: string, password: string): Observable<User> {
+    return this.client.send('validate-user', { email, password });
+  }
 }

@@ -47,4 +47,9 @@ export class AppController {
   async inactivate(@Payload() data: any): Promise<void> {
     return this.appService.inactivate(Number(data.value.id));
   }
+
+  @MessagePattern('validate-user')
+  async inactivate(@Payload() data: any): Promise<void> {
+    return this.appService.inactivate(Number(data.value.id));
+  }
 }

@@ -31,6 +31,11 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
+  @Get('/email/:email')
+  findOneByEmail(@Param('email') email: string): Observable<User> {
+    return this.userService.findOneByEmail(email);
+  }
+
   @Put(':id')
   update(
     @Param('id') id: number,
