@@ -62,7 +62,7 @@ export class AppService {
     await this.repository.update(id, { status: 'INACTIVATE' });
   }
 
-  async validateUser(email: string, password: string): Promise<void> {
+  async validateUser({ email, password }: UserEntity): Promise<void> {
     await this.repository.findOneBy({ email, password });
   }
 }

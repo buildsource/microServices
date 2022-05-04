@@ -49,7 +49,7 @@ export class AppController {
   }
 
   @MessagePattern('validate-user')
-  async inactivate(@Payload() data: any): Promise<void> {
-    return this.appService.inactivate(Number(data.value.id));
+  async validateUser(@Payload() data: any): Promise<void> {
+    return this.appService.validateUser(data.value);
   }
 }
