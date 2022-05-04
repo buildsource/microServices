@@ -11,7 +11,7 @@ export class NotificationService implements OnModuleInit {
     options: {
       client: {
         clientId: 'notification',
-        brokers: ['localhost:9092'],
+        brokers: ['172.17.0.1:9092'],
       },
       consumer: {
         groupId: 'notification-consumer',
@@ -24,10 +24,12 @@ export class NotificationService implements OnModuleInit {
   async onModuleInit() {
     const requestPatters = [];
 
-    requestPatters.forEach(async (pattern) => {
-      this.client.subscribeToResponseOf(pattern);
+    if (requestPatters.length > 0) {
+      requestPatters.forEach(async (pattern) =>
+        this.client.subscribeToResponseOf(pattern),
+      );
       await this.client.connect();
-    });
+    }
   }
 
   sendEmail(data: EmailDto): Observable<EmailDto> {

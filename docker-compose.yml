@@ -1,0 +1,96 @@
+version: '3'
+
+networks:
+  broker_network:
+    driver: bridge
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - '2181:2181'
+    networks:
+      - broker_network
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 172.17.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: 'create-user:1:1, find-all-user:1:1, find-user:1:1'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_TOPIC_METADATA_REFRESH_INTERVAL_MS: "60000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    networks:
+      - broker_network
+
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile.dev
+    container_name: api_gateway
+    command: yarn start
+    environment:
+      NODE_ENV: staging
+      PORT: 8999
+      JWT_SECRET: iPrsKdSOnLIZONmCdLfSMPz8EoU54Ghq
+      JWT_EXPIRES_IN: 360s
+    ports:
+      - '8999:8999'
+    networks:
+      - broker_network
+    depends_on:
+      - kafka
+
+  user-engine:
+    build:
+      context: ./user-engine
+      dockerfile: Dockerfile.dev
+    container_name: user_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    depends_on:
+      - api-gateway
+    networks:
+      - broker_network
+
+
+  notification-engine:
+    build:
+      context: ./notification-engine
+      dockerfile: Dockerfile.dev
+    container_name: notification_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    depends_on:
+      - user-engine
+    networks:
+      - broker_network
+
+  
+  book-engine:
+    build:
+      context: ./book-engine
+      dockerfile: Dockerfile.dev
+    container_name: book_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    depends_on:
+      - notification-engine
+    networks:
+      - broker_network

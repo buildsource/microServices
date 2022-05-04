@@ -12,16 +12,16 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
-          clientId: 'user',
+          clientId: 'notification',
           brokers: ['172.17.0.1:9092'],
         },
         consumer: {
-          groupId: 'user-consumer',
+          groupId: 'notification-consumer',
           allowAutoTopicCreation: true,
         },
       },
     },
   );
-  await app.listen().then(() => logger.log('user-engine is running'));
+  await app.listen().then(() => logger.log('notification-engine is running'));
 }
 bootstrap();

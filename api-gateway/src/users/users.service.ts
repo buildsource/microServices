@@ -1,16 +1,16 @@
 import { Observable } from 'rxjs';
 import { User } from './interfaces/user.interface';
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 
 @Injectable()
-export class UsersService implements OnModuleInit {
+export class UsersService implements OnModuleInit, OnModuleDestroy {
   @Client({
     transport: Transport.KAFKA,
     options: {
       client: {
         clientId: 'user',
-        brokers: ['localhost:9092'],
+        brokers: ['172.17.0.1:9092'],
       },
       consumer: {
         groupId: 'user-consumer',
@@ -20,12 +20,23 @@ export class UsersService implements OnModuleInit {
   })
   private client: ClientKafka;
   async onModuleInit() {
-    const requestPatters = ['find-all-user', 'find-user', 'create-user'];
+    const requestPatters = [
+      'find-all-user',
+      'find-user',
+      'create-user',
+      'validate-user',
+    ];
 
-    requestPatters.forEach(async (pattern) => {
-      this.client.subscribeToResponseOf(pattern);
+    if (requestPatters.length > 0) {
+      requestPatters.forEach(async (pattern) =>
+        this.client.subscribeToResponseOf(pattern),
+      );
       await this.client.connect();
-    });
+    }
+  }
+
+  async onModuleDestroy() {
+    await this.client.close();
   }
 
   create(createUser: User): Observable<User> {
@@ -54,5 +65,9 @@ export class UsersService implements OnModuleInit {
 
   inactivate(id: number) {
     return this.client.emit('inactivate-user', { id });
+  }
+
+  validateUser(email: string, password: string): Observable<User> {
+    return this.client.send('validate-user', { email, password });
   }
 }
