@@ -20,7 +20,12 @@ export class UsersService implements OnModuleInit, OnModuleDestroy {
   })
   private client: ClientKafka;
   async onModuleInit() {
-    const requestPatters = ['find-all-user', 'find-user', 'create-user'];
+    const requestPatters = [
+      'find-all-user',
+      'find-user',
+      'create-user',
+      'validate-user',
+    ];
 
     if (requestPatters.length > 0) {
       requestPatters.forEach(async (pattern) =>
@@ -60,5 +65,9 @@ export class UsersService implements OnModuleInit, OnModuleDestroy {
 
   inactivate(id: number) {
     return this.client.emit('inactivate-user', { id });
+  }
+
+  validateUser(email: string, password: string): Observable<User> {
+    return this.client.send('validate-user', { email, password });
   }
 }

@@ -39,6 +39,8 @@ services:
     environment:
       NODE_ENV: staging
       PORT: 8999
+      JWT_SECRET: iPrsKdSOnLIZONmCdLfSMPz8EoU54Ghq
+      JWT_EXPIRES_IN: 360s
     ports:
       - '8999:8999'
     networks:
