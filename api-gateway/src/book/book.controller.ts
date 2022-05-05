@@ -37,12 +37,16 @@ export class BookController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() { name, abstract, author }: Book) {
+  update(
+    @Param('id') id: number,
+    @Body() { name, abstract, author, year }: Book,
+  ) {
     const payload: Book = {
       id,
       name,
       abstract,
       author,
+      year,
     };
 
     return this.bookService.update(payload);

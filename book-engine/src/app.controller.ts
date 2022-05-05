@@ -15,10 +15,10 @@ export class AppController {
   }
 
   @MessagePattern('create-book')
-  async create(@Payload() data: any): Promise<BookEntity> {
-    this.logger.log(`Book: ${JSON.stringify(data)}`);
+  async create(@Payload() { value }: any): Promise<BookEntity> {
+    this.logger.log(`Book: ${JSON.stringify(value)}`);
 
-    return await this.appService.create(data.value);
+    return await this.appService.create(value);
   }
 
   @MessagePattern('find-book')

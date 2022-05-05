@@ -22,6 +22,7 @@ async function bootstrap() {
       },
     },
   );
+
   await app.listen().then(() => logger.log('user-engine is running'));
 }
 bootstrap();
