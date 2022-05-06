@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { Book } from './interfaces/book.interface';
 import { BookService } from './book.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { BookAssessments } from './interfaces/bookAssessments.interface';
 
 @Controller('book')
 export class BookController {
@@ -21,6 +22,11 @@ export class BookController {
   @Post()
   create(@Body() user: Book) {
     return this.bookService.create(user);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('assessments')
+  createAssessments(@Body() assessments: BookAssessments) {
+    return this.bookService.createAssessments(assessments);
   }
 
   @UseGuards(JwtAuthGuard)
