@@ -1,7 +1,7 @@
 export enum StarEnum {
-  One,
-  Two,
-  Three,
-  Four,
-  Five,
+  One = 'One',
+  Two = 'Two',
+  Three = 'Three',
+  Four = 'Four',
+  Five = 'Five',
 }

@@ -1,24 +1,25 @@
-import { User } from './../users/interfaces/user.interface';
+import { HttpService } from '@nestjs/axios';
+import { User } from './interfaces/user.interface';
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private readonly http: HttpService) {}
 
-  validateUser(email: string, password: string): Observable<User> {
-    return this.usersService.validateUser(email, password);
-  }
-
-  login({ email, id }: User): any {
-    const payload = { email, sub: id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login({ username, password }: User): Promise<any> {
+    return this.http
+      .post(
+        process.env.KEY_CLOAK_URI,
+        new URLSearchParams({
+          client_id: process.env.KEY_CLOAK_CLIENT_ID,
+          client_secret: process.env.KEY_CLOAK_CLIENT_SECRET,
+          grant_type: process.env.KEY_CLOAK_GRANT_TYPE,
+          username,
+          password,
+        }),
+      )
+      .toPromise()
+      .then((res) => res.data)
+      .catch((err) => err);
   }
 }

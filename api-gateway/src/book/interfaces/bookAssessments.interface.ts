@@ -9,7 +9,7 @@ export class BookAssessments {
 
   @IsNotEmpty()
   @IsEnum(StarEnum)
-  start: string;
+  start: StarEnum;
 
   @IsEmpty()
   comment: string;
