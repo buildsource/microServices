@@ -30,6 +30,38 @@ services:
       - broker_network
 
 
+  notification-engine:
+    build:
+      context: ./notification-engine
+      dockerfile: Dockerfile.dev
+    container_name: notification_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    depends_on:
+      - kafka
+    networks:
+      - broker_network
+
+  
+  book-engine:
+    build:
+      context: ./book-engine
+      dockerfile: Dockerfile.dev
+    container_name: book_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    depends_on:
+      - notification-engine
+    networks:
+      - broker_network
+
+
   api-gateway:
     build:
       context: ./api-gateway
@@ -49,36 +81,4 @@ services:
     networks:
       - broker_network
     depends_on:
-      - kafka
-
-
-  notification-engine:
-    build:
-      context: ./notification-engine
-      dockerfile: Dockerfile.dev
-    container_name: notification_engine
-    command: yarn start
-    environment:
-        NODE_ENV: staging
-    ports:
-        - "3000"
-    depends_on:
-      - user-engine
-    networks:
-      - broker_network
-
-  
-  book-engine:
-    build:
-      context: ./book-engine
-      dockerfile: Dockerfile.dev
-    container_name: book_engine
-    command: yarn start
-    environment:
-        NODE_ENV: staging
-    ports:
-        - "3000"
-    depends_on:
-      - notification-engine
-    networks:
-      - broker_network
+      - book-engine

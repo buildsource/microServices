@@ -11,7 +11,7 @@ import {
 import { Observable } from 'rxjs';
 import { Book } from './interfaces/book.interface';
 import { BookService } from './book.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BookAssessments } from './interfaces/bookAssessments.interface';
 
 @Controller('book')

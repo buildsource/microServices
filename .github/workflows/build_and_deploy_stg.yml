@@ -1,0 +1,41 @@
+name: Build and Deploy | STG
+
+on:
+  push:
+    branches: [ dev ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    name: Build and Push
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build docker image
+      run: docker build . --file Dockerfile --tag app_api:stg
+
+    # TODO: migrar docker login para doctl
+    - name: Push docker image
+      run: |
+        docker login -u ${{ secrets.DIGITALOCEAN_API_TOKEN }}  -p ${{ secrets.DIGITALOCEAN_API_TOKEN }}  registry.digitalocean.com
+        docker tag app_api:stg registry.digitalocean.com/xxx/app_api:stg
+        docker push registry.digitalocean.com/xxx/app_api:stg
+
+  deploy:
+      name: Deploy
+      runs-on: ubuntu-latest
+      needs: [ build ]
+      steps:
+      - name: Docker pull and reload
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_STG }}
+          username: root
+          key: ${{ secrets.DIGITALOCEAN_DROPLET_SSH_PRIVATE_KEY }}
+          script: |
+            cd /root/infra/
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
