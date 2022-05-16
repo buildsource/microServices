@@ -17,13 +17,9 @@ export class BookAssessmentsEntity {
 
   @Column()
   userId: number;
-
-  @Column({
-    type: 'enum',
-    enum: StarEnum,
-    default: StarEnum.One,
-  })
-  start: StarEnum;
+  
+  @Column()
+  start: string;
 
   @Column()
   comment: string;
