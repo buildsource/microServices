@@ -27,7 +27,7 @@ jobs:
         run: cd ./api-gateway
 
       - name: Install dependencies
-        run: cd ./api-gateway npm install
+        run: cd ./api-gateway && npm install
       
       - name: Lint code
         run: npm run lint
