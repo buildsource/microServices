@@ -1,41 +1,42 @@
 name: Build and Deploy | STG
 
 on:
-  push:
-    branches: [ dev ]
+  pull_request: 
+    - dev
+    types: [closed]
   workflow_dispatch:
 
 jobs:
-
   build:
-    name: Build and Push
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [16.x]
+    
     steps:
-    - uses: actions/checkout@v2
-    - name: Build docker image
-      run: docker build . --file Dockerfile --tag app_api:stg
-
-    # TODO: migrar docker login para doctl
-    - name: Push docker image
-      run: |
-        docker login -u ${{ secrets.DIGITALOCEAN_API_TOKEN }}  -p ${{ secrets.DIGITALOCEAN_API_TOKEN }}  registry.digitalocean.com
-        docker tag app_api:stg registry.digitalocean.com/xxx/app_api:stg
-        docker push registry.digitalocean.com/xxx/app_api:stg
-
-  deploy:
-      name: Deploy
-      runs-on: ubuntu-latest
-      needs: [ build ]
-      steps:
-      - name: Docker pull and reload
-        uses: appleboy/ssh-action@master
+      
+      - name: Copy repository
+        uses: actions/checkout@v2
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          host: ${{ secrets.HOST_STG }}
-          username: root
-          key: ${{ secrets.DIGITALOCEAN_DROPLET_SSH_PRIVATE_KEY }}
-          script: |
-            cd /root/infra/
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install npm dependencies
+        run: cd api-gateway && yarn install
+      
+      - name: Lint code
+        run: yarn lint
+      
+      - name: Run tests
+        run: yarn test
+      
+      - name: Run tests e2e
+        run: yarn test:e2e
+
+      # - name: SonarCloud Scan
+      #   uses: sonarsource/sonarcloud-github-action@master
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
