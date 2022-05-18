@@ -2,7 +2,7 @@ name: Build and Deploy | STG
 
 on:
   pull_request: 
-    - dev
+    branches: [ develop ]
     types: [closed]
   workflow_dispatch:
 
@@ -34,9 +34,3 @@ jobs:
       
       - name: Run tests e2e
         run: yarn test:e2e
-
-      # - name: SonarCloud Scan
-      #   uses: sonarsource/sonarcloud-github-action@master
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
