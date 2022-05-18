@@ -1,7 +1,7 @@
 name: Build | STG
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
   workflow_dispatch:
