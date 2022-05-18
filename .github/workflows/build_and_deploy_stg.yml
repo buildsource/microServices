@@ -23,17 +23,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Start api-gateway
-        run: cd ./api-gateway
-
       - name: Install dependencies
         run: cd ./api-gateway && npm install
       
       - name: Lint code
-        run: npm run lint
+        run: cd ./api-gateway && npm run lint
       
       - name: Run tests
-        run: npm run test
+        run: cd ./api-gateway && npm run test
       
       - name: Run tests e2e
-        run: npm run test:e2e
+        run: cd ./api-gateway && npm run test:e2e
