@@ -24,10 +24,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Start api-gateway
-        run: cd ./microServices/api-gateway
+        run: cd ./api-gateway
 
       - name: Install dependencies
-        run: npm install
+        run: cd ./api-gateway npm install
       
       - name: Lint code
         run: npm run lint
