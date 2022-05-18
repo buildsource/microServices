@@ -11,7 +11,7 @@ export class BookService implements OnModuleInit, OnModuleDestroy {
     options: {
       client: {
         clientId: 'book',
-        brokers: ['172.17.0.1:9092'],
+        brokers: ['host.docker.internal:9092'],
       },
       consumer: {
         groupId: 'book-consumer',

@@ -9,5 +9,6 @@ import { ConfigModule } from '@nestjs/config';
   imports: [ConfigModule.forRoot(), NotificationModule, BookModule, AuthModule],
   controllers: [AppController],
   providers: [],
+  exports: []
 })
 export class AppModule {}

@@ -1,0 +1,19 @@
+version: '3'
+
+networks:
+  broker_network:
+    driver: bridge
+
+services:
+  notification-engine:
+    build:
+      context: ./notification-engine
+      dockerfile: Dockerfile.dev
+    container_name: notification_engine
+    command: yarn start
+    environment:
+        NODE_ENV: staging
+    ports:
+        - "3000"
+    networks:
+      - broker_network
