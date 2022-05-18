@@ -1,8 +1,8 @@
-import { PhoneDto } from './dto/phone.dto';
-import { EmailDto } from './dto/email.dto';
 import { Observable } from 'rxjs';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
+import { Email } from './interfaces/email.interface';
+import { Phone } from './interfaces/phone.interface';
 
 @Injectable()
 export class NotificationService implements OnModuleInit {
@@ -11,7 +11,7 @@ export class NotificationService implements OnModuleInit {
     options: {
       client: {
         clientId: 'notification',
-        brokers: ['172.17.0.1:9092'],
+        brokers: ['host.docker.internal:9092'],
       },
       consumer: {
         groupId: 'notification-consumer',
@@ -32,11 +32,11 @@ export class NotificationService implements OnModuleInit {
     }
   }
 
-  sendEmail(data: EmailDto): Observable<EmailDto> {
+  sendEmail(data: Email): Observable<Email> {
     return this.client.emit('notification-email', data);
   }
 
-  sendPhone(data: PhoneDto): Observable<PhoneDto> {
+  sendPhone(data: Phone): Observable<Phone> {
     return this.client.emit('notification-phone', data);
   }
 }

@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { Book } from './interfaces/book.interface';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
+import { BookAssessments } from './interfaces/bookAssessments.interface';
 
 @Injectable()
 export class BookService implements OnModuleInit, OnModuleDestroy {
@@ -10,7 +11,7 @@ export class BookService implements OnModuleInit, OnModuleDestroy {
     options: {
       client: {
         clientId: 'book',
-        brokers: ['172.17.0.1:9092'],
+        brokers: ['host.docker.internal:9092'],
       },
       consumer: {
         groupId: 'book-consumer',
@@ -20,7 +21,12 @@ export class BookService implements OnModuleInit, OnModuleDestroy {
   })
   private client: ClientKafka;
   async onModuleInit() {
-    const requestPatters = ['find-all-book', 'find-book', 'create-book'];
+    const requestPatters = [
+      'find-all-book',
+      'find-book',
+      'create-book',
+      'create-book-assessments',
+    ];
 
     if (requestPatters.length > 0) {
       requestPatters.forEach(async (pattern) =>
@@ -36,6 +42,12 @@ export class BookService implements OnModuleInit, OnModuleDestroy {
 
   create(createBook: Book): Observable<Book> {
     return this.client.send('create-book', createBook);
+  }
+
+  createAssessments(
+    createBookAssessments: BookAssessments,
+  ): Observable<BookAssessments> {
+    return this.client.send('create-book-assessments', createBookAssessments);
   }
 
   findAll(): Observable<Book[]> {

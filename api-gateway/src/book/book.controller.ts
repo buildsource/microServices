@@ -11,7 +11,8 @@ import {
 import { Observable } from 'rxjs';
 import { Book } from './interfaces/book.interface';
 import { BookService } from './book.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { BookAssessments } from './interfaces/bookAssessments.interface';
 
 @Controller('book')
 export class BookController {
@@ -21,6 +22,11 @@ export class BookController {
   @Post()
   create(@Body() user: Book) {
     return this.bookService.create(user);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('assessments')
+  createAssessments(@Body() assessments: BookAssessments) {
+    return this.bookService.createAssessments(assessments);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -37,12 +43,16 @@ export class BookController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() { name, abstract, author }: Book) {
+  update(
+    @Param('id') id: number,
+    @Body() { name, abstract, author, year }: Book,
+  ) {
     const payload: Book = {
       id,
       name,
       abstract,
       author,
+      year,
     };
 
     return this.bookService.update(payload);

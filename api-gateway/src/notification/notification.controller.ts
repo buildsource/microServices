@@ -1,8 +1,8 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { EmailDto } from './dto/email.dto';
-import { PhoneDto } from './dto/phone.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Email } from './interfaces/email.interface';
+import { Phone } from './interfaces/phone.interface';
 
 @Controller('notification')
 export class NotificationController {
@@ -10,13 +10,13 @@ export class NotificationController {
 
   @UseGuards(JwtAuthGuard)
   @Post('email')
-  sendEmail(@Body() data: EmailDto) {
+  sendEmail(@Body() data: Email) {
     return this.notificationService.sendEmail(data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('phone')
-  sendPhone(@Body() data: PhoneDto) {
+  sendPhone(@Body() data: Phone) {
     return this.notificationService.sendPhone(data);
   }
 }

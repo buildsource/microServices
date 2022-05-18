@@ -1,5 +1,5 @@
 //https://www.youtube.com/watch?v=KDAwfMR0inQ&list=UUX3TI4bDNEGLVmGIoJSwlfg&index=22
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -18,6 +18,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT, () =>
     logger.log('api-gateway is running'),

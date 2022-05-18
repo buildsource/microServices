@@ -1,0 +1,17 @@
+version: '3'
+
+networks:
+  broker_network:
+    driver: bridge
+
+services:
+  keycloak:
+    image: jboss/keycloak:latest
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=h2
+    ports:
+      - 8080:8080
+    networks:
+      - broker_network

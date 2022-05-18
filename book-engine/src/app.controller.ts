@@ -1,3 +1,4 @@
+import { BookAssessmentsEntity } from 'src/entities/bookAssessments.entity';
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
@@ -15,10 +16,19 @@ export class AppController {
   }
 
   @MessagePattern('create-book')
-  async create(@Payload() data: any): Promise<BookEntity> {
-    this.logger.log(`Book: ${JSON.stringify(data)}`);
+  async create(@Payload() { value }: any): Promise<BookEntity> {
+    this.logger.log(`Book: ${JSON.stringify(value)}`);
 
-    return await this.appService.create(data.value);
+    return await this.appService.create(value);
+  }
+
+  @MessagePattern('create-book-assessments')
+  async createAssessments(
+    @Payload() { value }: any,
+  ): Promise<BookAssessmentsEntity> {
+    this.logger.log(`Book: ${JSON.stringify(value)}`);
+
+    return await this.appService.createAssessments(value);
   }
 
   @MessagePattern('find-book')

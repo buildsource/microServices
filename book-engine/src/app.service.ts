@@ -1,3 +1,4 @@
+import { BookAssessmentsEntity } from 'src/entities/bookAssessments.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,6 +9,8 @@ export class AppService {
   constructor(
     @InjectRepository(BookEntity)
     private repository: Repository<BookEntity>,
+    @InjectRepository(BookAssessmentsEntity)
+    private repositoryAssessmentsEntity: Repository<BookAssessmentsEntity>,
   ) {}
 
   async findAll(): Promise<BookEntity[]> {
@@ -15,11 +18,18 @@ export class AppService {
       order: {
         id: 'DESC',
       },
+      relations: ['bookAssessments'],
     });
   }
 
   async create(book: BookEntity): Promise<BookEntity> {
     return await this.repository.save(book);
+  }
+
+  async createAssessments(
+    bookAssessments: BookAssessmentsEntity,
+  ): Promise<BookAssessmentsEntity> {
+    return await this.repositoryAssessmentsEntity.save(bookAssessments);
   }
 
   async findOne(bookId: number): Promise<BookEntity> {
