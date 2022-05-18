@@ -1,4 +1,4 @@
-name: Build and Deploy | STG
+name: Build | STG
 
 on:
   pull_request:
