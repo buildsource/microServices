@@ -22,7 +22,6 @@ const login = async () => {
 }
 
 describe('BookController (e2e)', () => {
-
   describe('/book (POST)', () => {
     it('it should return a book by id', async () => {
       const responseBook: request.Response = await request(uri).post(`/book`)

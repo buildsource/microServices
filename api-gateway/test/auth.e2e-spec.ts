@@ -1,10 +1,10 @@
-import { HttpStatus, Logger } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { Token } from '../src/auth/interfaces/token.interface';
 
 describe('AuthController (e2e)', () => {
   const uri = `http://localhost:3000`;
-
+  
   describe('/auth/login (POST)', () => {
     it('it should return the token', async () => {
       const responseAuth: request.Response = await request(uri).post(`/auth/login`)
