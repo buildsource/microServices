@@ -18,30 +18,30 @@ import { BookAssessments } from './interfaces/bookAssessments.interface';
 export class BookController {
   constructor(private bookService: BookService) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() user: Book) {
     return this.bookService.create(user);
   }
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('assessments')
   createAssessments(@Body() assessments: BookAssessments) {
     return this.bookService.createAssessments(assessments);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(): Observable<Book[]> {
     return this.bookService.findAll();
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: number): Observable<Book> {
     return this.bookService.findOne(id);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(
     @Param('id') id: number,
@@ -58,7 +58,7 @@ export class BookController {
     return this.bookService.update(payload);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.bookService.remove(id);

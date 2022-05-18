@@ -1,12 +1,13 @@
-import { User } from './interfaces/user.interface';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { Auth } from './interfaces/auth.interface';
+import { Token } from './interfaces/token.interface';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly http: HttpService) { }
 
-  async login({ username, password }: User): Promise<any> {
+  async login({ username, password }: Auth): Promise<Token> {
     return await this.http
 
       .post(
