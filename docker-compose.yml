@@ -3,6 +3,10 @@ version: '3'
 networks:
   broker_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.17.0.0/16
+          gateway: 172.17.0.1
 
 services:
   keycloak:
