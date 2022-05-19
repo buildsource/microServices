@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { Token } from '../src/auth/interfaces/token.interface';
 
-const uri = `http://host.docker.internal:3000`;
+const uri = `http://172.17.0.1:3000`;
 
 const getToken = async () => {
   const responseAuth: request.Response = await request(uri)
