@@ -19,12 +19,17 @@ services:
     networks:
       - broker_network
 
+
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
       - '2181:2181'
     networks:
       - broker_network
+    depends_on:
+      - keycloak
+
+
   kafka:
     image: wurstmeister/kafka:latest
     ports:
@@ -96,3 +101,5 @@ services:
       - broker_network
     depends_on:
       - book-engine
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
