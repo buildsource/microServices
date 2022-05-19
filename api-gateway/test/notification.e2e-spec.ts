@@ -2,9 +2,9 @@ import { HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { Token } from '../src/auth/interfaces/token.interface';
 
-const uri = `http://localhost:3000`;
+const uri = `http://host.docker.internal:3000`;
 
-const login = async () => {
+const getToken = async () => {
   const responseAuth: request.Response = await request(uri)
     .post(`/auth/login`)
     .send({
@@ -14,7 +14,7 @@ const login = async () => {
 
   const response: Token = responseAuth.body;
 
-  return response;
+  return `Bearer ${response.access_token}`;
 };
 
 describe('NotificationController (e2e)', () => {
@@ -22,7 +22,7 @@ describe('NotificationController (e2e)', () => {
     it('it should trigger a notification to the email', async () => {
       await request(uri)
         .post(`/notification/email`)
-        .set({ Authorization: await login() })
+        .set({ Authorization: await getToken() })
         .send({
           name: 'claudinei',
           email: 'claudinei-de-lima@hotmail.com',
@@ -36,7 +36,7 @@ describe('NotificationController (e2e)', () => {
     it('it should trigger a notification to the phone', async () => {
       await request(uri)
         .post(`/notification/phone`)
-        .set({ Authorization: await login() })
+        .set({ Authorization: await getToken() })
         .send({
           name: 'Claudinei',
           phone: '5555991657275',

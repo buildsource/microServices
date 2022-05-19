@@ -1,13 +1,13 @@
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus, Logger } from '@nestjs/common';
 import { Book } from '../src/book/interfaces/book.interface';
 import * as request from 'supertest';
 import { BookAssessments } from '../src/book/interfaces/bookAssessments.interface';
 import { StarEnum } from '../src/book/enum/start.enum';
 import { Token } from 'src/auth/interfaces/token.interface';
 
-const uri = `http://localhost:3000`;
+const uri = `http://host.docker.internal:3000`;
 
-const login = async () => {
+const getToken = async () => {
   const responseAuth: request.Response = await request(uri)
     .post(`/auth/login`)
     .send({
@@ -17,7 +17,7 @@ const login = async () => {
 
   const response: Token = responseAuth.body;
 
-  return response;
+  return `Bearer ${response.access_token}`;
 };
 
 describe('BookController (e2e)', () => {
@@ -25,7 +25,7 @@ describe('BookController (e2e)', () => {
     it('it should return a book by id', async () => {
       const responseBook: request.Response = await request(uri)
         .post(`/book`)
-        .set({ Authorization: await login() })
+        .set({ Authorization: await getToken() })
         .send({
           name:
             'Book ' +
@@ -37,6 +37,8 @@ describe('BookController (e2e)', () => {
           author: 'author',
           year: '2022',
         });
+
+      Logger.debug('responseBook: ' + JSON.stringify(responseBook.body));
 
       const { id, name, author, abstract, year }: Book = responseBook.body;
 
@@ -53,7 +55,9 @@ describe('BookController (e2e)', () => {
     it('it should return a list of books', async () => {
       const books: request.Response = await request(uri)
         .get('/book')
-        .set({ Authorization: await login() });
+        .set({ Authorization: await getToken() });
+
+      Logger.debug('books: ' + JSON.stringify(books.body));
 
       expect(Object.values(books).length > 0).toBeTruthy();
       expect(HttpStatus.OK);
@@ -64,13 +68,15 @@ describe('BookController (e2e)', () => {
     it('it should return a book by id', async () => {
       const responseBooks: request.Response = await request(uri)
         .get('/book')
-        .set({ Authorization: await login() });
+        .set({ Authorization: await getToken() });
 
       const { id, name, author, abstract }: Book = responseBooks.body[0];
 
       const responseBook: request.Response = await request(uri)
         .get(`/book/${id}`)
-        .set({ Authorization: await login() });
+        .set({ Authorization: await getToken() });
+
+      Logger.debug('responseBook: ' + JSON.stringify(responseBook.body));
 
       const book: Book = responseBook.body;
 
@@ -86,19 +92,21 @@ describe('BookController (e2e)', () => {
     it('it should return a book by id', async () => {
       const responseBooks: request.Response = await request(uri)
         .get('/book')
-        .set({ Authorization: await login() });
+        .set({ Authorization: await getToken() });
 
       const { id }: Book = responseBooks.body[0];
 
       const responseAssessments: request.Response = await request(uri)
         .post(`/book/assessments`)
-        .set({ Authorization: await login() })
+        .set({ Authorization: await getToken() })
         .send({
           userId: '2',
           start: 'Two',
           comment: '',
           book: id,
         });
+
+      Logger.debug('responseAssessments: ' + JSON.stringify(responseAssessments.body));
 
       const { userId, start, comment, book }: BookAssessments =
         responseAssessments.body;
