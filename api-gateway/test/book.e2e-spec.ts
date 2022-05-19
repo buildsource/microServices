@@ -5,7 +5,7 @@ import { BookAssessments } from '../src/book/interfaces/bookAssessments.interfac
 import { StarEnum } from '../src/book/enum/start.enum';
 import { Token } from 'src/auth/interfaces/token.interface';
 
-const uri = `http://172.17.0.1:3000`;
+const uri = `http://localhost:3000`;
 
 const getToken = async () => {
   const responseAuth: request.Response = await request(uri)

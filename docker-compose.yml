@@ -101,5 +101,3 @@ services:
       - broker_network
     depends_on:
       - book-engine
-    extra_hosts:
-      - "172.17.0.1:172.17.0.1"
