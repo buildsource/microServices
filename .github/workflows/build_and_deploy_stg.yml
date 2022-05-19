@@ -22,6 +22,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      
+      - name: Docker compose
+        run: docker-compose up --build -d
 
       - name: Install dependencies
         run: cd ./api-gateway && npm install
@@ -29,8 +32,8 @@ jobs:
       - name: Lint code
         run: cd ./api-gateway && npm run lint
       
-      - name: Run tests
+      - name: Run api-gateway tests
         run: cd ./api-gateway && npm run test
       
-      - name: Run tests e2e
+      - name: Run api-gateway tests e2e
         run: cd ./api-gateway && npm run test:e2e
