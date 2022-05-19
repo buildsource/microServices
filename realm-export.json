@@ -1,4 +1,25 @@
 {
+  "users": [
+    {
+      "username": "claudinei",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "claudinei-de-lima@hotmail.com",
+      "firstName": "Claudinei",
+      "lastName": "de Lima",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "123456"
+        }
+      ],
+      "realmRoles": [
+        "default-roles-microservices"
+      ],
+      "clientRoles": {
+      }
+    }
+  ],
   "id": "microservices",
   "realm": "microservices",
   "notBefore": 0,
