@@ -3,10 +3,6 @@ version: '3'
 networks:
   broker_network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.17.0.0/16
-          gateway: 172.17.0.1
 
 services:
   keycloak:
@@ -62,7 +58,7 @@ services:
     environment:
         NODE_ENV: staging
     ports:
-        - "3000"
+        - "3002:56337"
     depends_on:
       - kafka
     networks:
@@ -78,7 +74,7 @@ services:
     environment:
         NODE_ENV: staging
     ports:
-        - "3000"
+        - "3001:56321"
     depends_on:
       - notification-engine
     networks:
