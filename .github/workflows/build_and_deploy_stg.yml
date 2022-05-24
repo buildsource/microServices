@@ -1,7 +1,7 @@
 name: Build | STG
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
   workflow_dispatch:
@@ -22,15 +22,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      
+      - name: Docker compose
+        run: docker-compose up --build -d
 
-      - name: Install npm dependencies
-        run: cd api-gateway && yarn install
+      - name: Install dependencies
+        run: cd ./api-gateway && npm install
       
       - name: Lint code
-        run: yarn lint
+        run: cd ./api-gateway && npm run lint
       
-      - name: Run tests
-        run: yarn test
+      - name: Run api-gateway tests
+        run: cd ./api-gateway && npm run test
       
-      - name: Run tests e2e
-        run: yarn test:e2e
+      - name: Run api-gateway tests e2e
+        run: cd ./api-gateway && npm run test:e2e

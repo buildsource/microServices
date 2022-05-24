@@ -5,7 +5,7 @@ import { Token } from './interfaces/token.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly http: HttpService) { }
+  constructor(private readonly http: HttpService) {}
 
   async login({ username, password }: Auth): Promise<Token> {
     return await this.http

@@ -5,12 +5,31 @@ networks:
     driver: bridge
 
 services:
+  keycloak:
+    image: tfsite/microservices_keycloak:latest
+    volumes:
+      - ./realm-export.json:/realm-export.json
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=h2
+      - KEYCLOAK_IMPORT=/realm-export.json
+    ports:
+      - 8080:8080
+    networks:
+      - broker_network
+
+
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
       - '2181:2181'
     networks:
       - broker_network
+    depends_on:
+      - keycloak
+
+
   kafka:
     image: wurstmeister/kafka:latest
     ports:
@@ -39,7 +58,7 @@ services:
     environment:
         NODE_ENV: staging
     ports:
-        - "3000"
+        - "3002:56337"
     depends_on:
       - kafka
     networks:
@@ -55,7 +74,7 @@ services:
     environment:
         NODE_ENV: staging
     ports:
-        - "3000"
+        - "3001:56321"
     depends_on:
       - notification-engine
     networks:
@@ -71,11 +90,11 @@ services:
     environment:
       NODE_ENV: staging
       PORT: 3000
-      KEY_CLOAK_URI: http://host.docker.internal:8080/auth/realms/microservices/protocol/openid-connect/token
+      KEY_CLOAK_URI: http://172.17.0.1:8080/auth/realms/microservices/protocol/openid-connect/token
       KEY_CLOAK_CLIENT_ID: micro-services
       KEY_CLOAK_GRANT_TYPE: password
-      KEY_CLOAK_CLIENT_SECRET: b1gNbcnHM71tYm5XCm6B2Pl5Xhs8KIul
-      KEY_CLOAK_REALM_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApiiaLMxWm+JiZPWGbjYhf7zcwpNecoF4pXvLA7jQLO+zdFFVfAxJi8YO7+ajAMuNyjr9+/Y9LMca+dDZUkTq/WqAhY3nWgxwnCu7wryKBeH8UmB2jXFHZHZ34/w7ZFptHwGLZTMi1vtyAu7i7hqYjLnmL/HLtjssD3FGOViCNn5DUHAtv56FenTqLdIQ73qdt4hqIjbpP2PY3UHlwt3gIeSaJU+B15dO/iFopgqh7Zfjept3yuFQnhyLCVa5wLF+X6pm6Bc++LpEGX/cKLpiy0BmHJXMi9XyGfVwLAQ3lr4zqNJGOYKC22tZH8byEL36lSsCB4+/VMf5I9UF4ozHQwIDAQAB
+      KEY_CLOAK_CLIENT_SECRET: WJ7wDl3lp4qottXd2w4x8hWNHB9A6rHd
+      KEY_CLOAK_REALM_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjOl1VNh3uBkRrPSiZNJEvYG1yosZdyCrj63oPzPmB1S6tgDxACpIshgOlO7yKP0khE79IYhTZjD6PmcZ0ffF6QMrMvMox2jopM2rmSw7AOybTmeFXWhncYwWSP8x5hYcij1hqIWiy5wRu8CkRhjaE2ucFEoyxCJ24zFyBe5UFa76whGN4nrteQvZCVu81gPgqUZiZU5h+R/iuSy5nFsTdkwRenRJ7/DtMmLQlk3mrmK0K0v2oWQ0RgPIqndAGcahNbx5b4udMMAqg4TBVLPOMu0bsdI6Cp7dmI+sFfW5CVKmkZ5VerumGEPhJHunNhJVqyRgfUVVrH8Ceiuzta8PDQIDAQAB
     ports:
       - '3000:3000'
     networks:
