@@ -22,7 +22,7 @@ const getToken = async () => {
 
 describe('BookController (e2e)', () => {
   describe('/book (POST)', () => {
-    it('it should return a book by id', async () => {
+    it('it should create a book', async () => {
       const responseBook: request.Response = await request(uri)
         .post(`/book`)
         .set({ Authorization: await getToken() })
@@ -89,7 +89,7 @@ describe('BookController (e2e)', () => {
   });
 
   describe('/book/assessments (POST)', () => {
-    it('it should return a book by id', async () => {
+    it('it should create assessments', async () => {
       const responseBooks: request.Response = await request(uri)
         .get('/book')
         .set({ Authorization: await getToken() });
