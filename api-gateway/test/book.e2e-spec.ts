@@ -106,7 +106,9 @@ describe('BookController (e2e)', () => {
           book: id,
         });
 
-      Logger.debug('responseAssessments: ' + JSON.stringify(responseAssessments.body));
+      Logger.debug(
+        'responseAssessments: ' + JSON.stringify(responseAssessments.body),
+      );
 
       const { userId, start, comment, book }: BookAssessments =
         responseAssessments.body;
