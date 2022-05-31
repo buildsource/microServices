@@ -16,7 +16,7 @@ import { BookAssessmentsDto } from './dto/bookAssessments.dto';
 
 @Controller('book')
 export class BookController {
-  constructor(private bookService: BookService) { }
+  constructor(private bookService: BookService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -47,7 +47,6 @@ export class BookController {
     @Param('id') id: number,
     @Body() { name, abstract, author, year }: BookDto,
   ) {
-
     return this.bookService.update({
       id,
       name,

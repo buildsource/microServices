@@ -1,5 +1,6 @@
 # compiled output
 /dist
+/.build
 /node_modules
 
 # Logs
@@ -37,3 +38,4 @@ package-lock.json
 database.db
 .env
 yarn.lock
+/.serverless/main.zip
