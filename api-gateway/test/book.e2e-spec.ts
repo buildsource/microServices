@@ -100,7 +100,7 @@ describe('BookController (e2e)', () => {
         .post(`/book/assessments`)
         .set({ Authorization: await getToken() })
         .send({
-          userId: '2',
+          userId: 2,
           start: 'Two',
           comment: '',
           book: { id },
