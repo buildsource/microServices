@@ -9,35 +9,35 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { Book } from './interfaces/book.interface';
+import { BookDto } from './dto/book.dto';
 import { BookService } from './book.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { BookAssessments } from './interfaces/bookAssessments.interface';
+import { BookAssessmentsDto } from './dto/bookAssessments.dto';
 
 @Controller('book')
 export class BookController {
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() user: Book) {
+  create(@Body() user: BookDto) {
     return this.bookService.create(user);
   }
   @UseGuards(JwtAuthGuard)
   @Post('assessments')
-  createAssessments(@Body() assessments: BookAssessments) {
+  createAssessments(@Body() assessments: BookAssessmentsDto) {
     return this.bookService.createAssessments(assessments);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(): Observable<Book[]> {
+  findAll(): Observable<BookDto[]> {
     return this.bookService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: number): Observable<Book> {
+  findOne(@Param('id') id: number): Observable<BookDto> {
     return this.bookService.findOne(id);
   }
 
@@ -45,17 +45,16 @@ export class BookController {
   @Put(':id')
   update(
     @Param('id') id: number,
-    @Body() { name, abstract, author, year }: Book,
+    @Body() { name, abstract, author, year }: BookDto,
   ) {
-    const payload: Book = {
+
+    return this.bookService.update({
       id,
       name,
       abstract,
       author,
       year,
-    };
-
-    return this.bookService.update(payload);
+    });
   }
 
   @UseGuards(JwtAuthGuard)

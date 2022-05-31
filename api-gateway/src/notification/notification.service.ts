@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
-import { Email } from './interfaces/email.interface';
-import { Phone } from './interfaces/phone.interface';
+import { EmailDto } from './dto/email.dto';
+import { PhoneDto } from './dto/phone.dto';
 
 @Injectable()
 export class NotificationService implements OnModuleInit {
@@ -32,11 +32,11 @@ export class NotificationService implements OnModuleInit {
     }
   }
 
-  sendEmail(data: Email): Observable<Email> {
+  sendEmail(data: EmailDto): Observable<EmailDto> {
     return this.client.emit('notification-email', data);
   }
 
-  sendPhone(data: Phone): Observable<Phone> {
+  sendPhone(data: PhoneDto): Observable<PhoneDto> {
     return this.client.emit('notification-phone', data);
   }
 }

@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { NotificationEntity } from './entities/notification.entity';
 import { InjectSendGrid, SendGridService } from '@ntegral/nestjs-sendgrid';
 import { Client, TextContent, IMessage } from '@zenvia/sdk';
-import { NotificationDto } from './dto/notification.dto';
+import { EmailDto } from './dto/email.dto';
+import { PhoneDto } from './dto/phone.dto';
 
 @Injectable()
 export class AppService {
@@ -12,11 +13,11 @@ export class AppService {
     @InjectRepository(NotificationEntity)
     private repository: Repository<NotificationEntity>,
     @InjectSendGrid() private readonly sendGrid: SendGridService,
-  ) {}
+  ) { }
 
   private zenviaClient = new Client(process.env.ZENVIA_TOKEN);
 
-  async sendEmail(userId: number, email: string, name: string): Promise<void> {
+  async sendEmail({ email, name }: EmailDto): Promise<void> {
     await this.sendGrid
       .send({
         to: email,
@@ -41,7 +42,7 @@ export class AppService {
       });
   }
 
-  async sendPhone(userId: number, phone: string, name: string): Promise<void> {
+  async sendPhone({ phone, name }: PhoneDto): Promise<void> {
     const type = 'sms';
     const sms = this.zenviaClient.getChannel(type);
     const content = new TextContent(

@@ -1,9 +1,9 @@
 import { HttpStatus, Logger } from '@nestjs/common';
-import { Book } from '../src/book/interfaces/book.interface';
+import { Book } from '../src/book/dto/book.dto';
 import * as request from 'supertest';
-import { BookAssessments } from '../src/book/interfaces/bookAssessments.interface';
+import { BookAssessments } from '../src/book/dto/bookAssessments.dto';
 import { StarEnum } from '../src/book/enum/start.enum';
-import { Token } from 'src/auth/interfaces/token.interface';
+import { Token } from 'src/auth/dto/token.dto';
 
 const uri = `http://localhost:3000`;
 

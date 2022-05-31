@@ -4,29 +4,23 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   private readonly logger = new Logger(AppController.name);
 
   @MessagePattern('notification-email')
-  async sendEmail(@Payload() data: any): Promise<void> {
-    this.logger.log(`Email: ${JSON.stringify(data)}`);
+  async sendEmail(@Payload() { value }: any): Promise<void> {
 
-    await this.appService.sendEmail(
-      Number(data.value.id),
-      data.value.email,
-      data.value.name,
-    );
+    this.logger.log(`Email: ${JSON.stringify(value)}`);
+
+    await this.appService.sendEmail(value);
   }
 
   @MessagePattern('notification-phone')
-  async sendPhone(@Payload() data: any): Promise<void> {
-    this.logger.log(`Phone: ${JSON.stringify(data)}`);
+  async sendPhone(@Payload() { value }: any): Promise<void> {
 
-    this.appService.sendPhone(
-      Number(data.value.id),
-      data.value.phone,
-      data.value.name,
-    );
+    this.logger.log(`Phone: ${JSON.stringify(value)}`);
+
+    this.appService.sendPhone(value);
   }
 }

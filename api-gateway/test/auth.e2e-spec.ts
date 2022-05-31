@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
-import { Token } from '../src/auth/interfaces/token.interface';
+import { Token } from '../src/auth/dto/token.dto';
 
 describe('AuthController (e2e)', () => {
   const uri = `http://localhost:3000`;

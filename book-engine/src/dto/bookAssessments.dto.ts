@@ -1,7 +1,7 @@
-import { StarEnum } from './../enum/start.enum';
+import { StarEnum } from '../enum/start.enum';
 import { IsEmpty, IsEnum, IsNotEmpty } from 'class-validator';
 
-export class BookAssessments {
+export class BookAssessmentsDto {
   id: number;
 
   @IsNotEmpty()

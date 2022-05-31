@@ -1,4 +1,4 @@
-export class Token {
+export class TokenDto {
   access_token: string;
   refresh_token: string;
   scope: string;

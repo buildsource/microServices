@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsMobilePhone, IsString } from 'class-validator';
 
-export class Phone {
+export class PhoneDto {
   id: number;
 
   @IsNotEmpty()
