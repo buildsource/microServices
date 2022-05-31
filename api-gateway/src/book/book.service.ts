@@ -3,6 +3,7 @@ import { BookDto } from './dto/book.dto';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 import { BookAssessmentsDto } from './dto/bookAssessments.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BookService implements OnModuleInit, OnModuleDestroy {
@@ -58,7 +59,7 @@ export class BookService implements OnModuleInit, OnModuleDestroy {
     return this.client.send('find-book', { id });
   }
 
-  update(payload: BookDto) {
+  update(payload: Partial<UpdateBookDto>) {
     return this.client.emit('update-book', payload);
   }
 

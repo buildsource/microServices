@@ -13,6 +13,7 @@ import { BookDto } from './dto/book.dto';
 import { BookService } from './book.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BookAssessmentsDto } from './dto/bookAssessments.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('book')
 export class BookController {
@@ -45,7 +46,7 @@ export class BookController {
   @Put(':id')
   update(
     @Param('id') id: number,
-    @Body() { name, abstract, author, year }: BookDto,
+    @Body() { name, abstract, author, year }: Partial<UpdateBookDto>,
   ) {
     return this.bookService.update({
       id,

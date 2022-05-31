@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { BookEntity } from './entities/book.entity';
 import { BookDto } from './dto/book.dto';
 import { BookAssessmentsDto } from './dto/bookAssessments.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class AppService {
@@ -50,7 +51,7 @@ export class AppService {
     abstract,
     author,
     year,
-  }: BookDto): Promise<void> {
+  }: Partial<UpdateBookDto>): Promise<void> {
     const book = await this.repository.findOneBy({ id });
 
     book.name = name ? name : book.name;
@@ -58,7 +59,7 @@ export class AppService {
     book.author = author ? author : book.author;
     book.year = year ? year : book.year;
 
-    await this.repository.save(book);
+    await this.repository.update(id, book);
   }
 
   async remove(id: number): Promise<void> {

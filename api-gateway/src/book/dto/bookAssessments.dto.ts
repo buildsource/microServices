@@ -1,5 +1,5 @@
-import { StarEnum } from '../enum/start.enum';
-import { IsEmpty, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEmpty, IsNotEmpty } from 'class-validator';
+import { BookDto } from './book.dto';
 
 export class BookAssessmentsDto {
   id: number;
@@ -8,12 +8,11 @@ export class BookAssessmentsDto {
   userId: string;
 
   @IsNotEmpty()
-  @IsEnum(StarEnum)
-  start: StarEnum;
+  book: BookDto;
+
+  @IsNotEmpty()
+  start: string;
 
   @IsEmpty()
   comment: string;
-
-  @IsNotEmpty()
-  book: number;
 }

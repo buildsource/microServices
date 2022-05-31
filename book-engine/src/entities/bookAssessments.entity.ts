@@ -1,4 +1,3 @@
-import { StarEnum } from 'src/enum/start.enum';
 import {
   Column,
   CreateDateColumn,
@@ -17,7 +16,7 @@ export class BookAssessmentsEntity {
 
   @Column()
   userId: number;
-  
+
   @Column()
   start: string;
 
