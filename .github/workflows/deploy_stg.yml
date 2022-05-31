@@ -10,6 +10,8 @@ on:
 jobs:
   
   build:
+    context: ./api-gateway
+    dockerfile: Dockerfile.dev
     
     name: Build Image
     runs-on: ubuntu-latest
@@ -35,6 +37,14 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: micro-services
         IMAGE_TAG: micro-services
+        NODE_ENV: staging
+        PORT: 3000
+        KEY_CLOAK_URI: http://172.17.0.1:8080/auth/realms/microservices/protocol/openid-connect/token
+        KEY_CLOAK_CLIENT_ID: micro-services
+        KEY_CLOAK_GRANT_TYPE: password
+        KEY_CLOAK_CLIENT_SECRET: WJ7wDl3lp4qottXd2w4x8hWNHB9A6rHd
+        KEY_CLOAK_REALM_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjOl1VNh3uBkRrPSiZNJEvYG1yosZdyCrj63oPzPmB1S6tgDxACpIshgOlO7yKP0khE79IYhTZjD6PmcZ0ffF6QMrMvMox2jopM2rmSw7AOybTmeFXWhncYwWSP8x5hYcij1hqIWiy5wRu8CkRhjaE2ucFEoyxCJ24zFyBe5UFa76whGN4nrteQvZCVu81gPgqUZiZU5h+R/iuSy5nFsTdkwRenRJ7/DtMmLQlk3mrmK0K0v2oWQ0RgPIqndAGcahNbx5b4udMMAqg4TBVLPOMu0bsdI6Cp7dmI+sFfW5CVKmkZ5VerumGEPhJHunNhJVqyRgfUVVrH8Ceiuzta8PDQIDAQAB
+    
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           echo "Pushing image to ECR..."
