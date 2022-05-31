@@ -10,8 +10,7 @@ on:
 jobs:
   
   build:
-    context: ./api-gateway
-    dockerfile: Dockerfile.dev
+    dockerfile: ./api-gateway/Dockerfile.dev
     
     name: Build Image
     runs-on: ubuntu-latest
