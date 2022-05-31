@@ -113,7 +113,7 @@ describe('BookController (e2e)', () => {
       const { userId, start, comment, book }: BookAssessmentsDto =
         responseAssessments.body;
 
-      expect(typeof userId).toBe('string');
+      expect(typeof userId).toBe('number');
       expect(start).toEqual(StarEnum.Two);
       expect(typeof comment).toBe('string');
       expect(typeof book.id).toBe('number');

@@ -5,7 +5,7 @@ export class BookAssessmentsDto {
   id: number;
 
   @IsNotEmpty()
-  userId: string;
+  userId: number;
 
   @IsNotEmpty()
   book: BookDto;
