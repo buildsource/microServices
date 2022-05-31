@@ -116,7 +116,7 @@ describe('BookController (e2e)', () => {
       expect(typeof userId).toBe('string');
       expect(start).toEqual(StarEnum.Two);
       expect(typeof comment).toBe('string');
-      expect(typeof book).toBe('number');
+      expect(typeof book.id).toBe('number');
       expect(HttpStatus.CREATED);
     });
   });
