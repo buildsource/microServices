@@ -1,0 +1,34 @@
+service: api-gateway
+
+useDotenv: true
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-plugin-optimize
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: sa-east-1
+  stage: dev
+  environment:
+    PORT: ${env:PORT}
+    KEY_CLOAK_URI: ${env:KEY_CLOAK_URI}
+    KEY_CLOAK_CLIENT_ID: ${env:KEY_CLOAK_CLIENT_ID}
+    KEY_CLOAK_GRANT_TYPE: ${env:KEY_CLOAK_GRANT_TYPE}
+    KEY_CLOAK_CLIENT_SECRET: ${env:KEY_CLOAK_CLIENT_SECRET}
+    KEY_CLOAK_REALM_PUBLIC_KEY: ${env:KEY_CLOAK_REALM_PUBLIC_KEY}
+
+package:
+  individually: true
+  include:
+    - .env
+
+functions:
+ main:
+   handler: src/lambda.handler
+   events:
+     - http:
+         method: any
+         path: /{any+}

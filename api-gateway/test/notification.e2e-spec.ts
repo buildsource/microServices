@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
-import { Token } from '../src/auth/interfaces/token.interface';
+import { TokenDto } from '../src/auth/dto/token.dto';
 
 const uri = `http://localhost:3000`;
 
@@ -12,7 +12,7 @@ const getToken = async () => {
       password: '123456',
     });
 
-  const response: Token = responseAuth.body;
+  const response: TokenDto = responseAuth.body;
 
   return `Bearer ${response.access_token}`;
 };

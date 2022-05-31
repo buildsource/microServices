@@ -3,6 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BookEntity } from './entities/book.entity';
+import { BookDto } from './dto/book.dto';
+import { BookAssessmentsDto } from './dto/bookAssessments.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class AppService {
@@ -13,7 +16,7 @@ export class AppService {
     private repositoryAssessmentsEntity: Repository<BookAssessmentsEntity>,
   ) {}
 
-  async findAll(): Promise<BookEntity[]> {
+  async findAll(): Promise<BookDto[]> {
     return await this.repository.find({
       order: {
         id: 'DESC',
@@ -22,20 +25,20 @@ export class AppService {
     });
   }
 
-  async create(book: BookEntity): Promise<BookEntity> {
+  async create(book: BookDto): Promise<BookDto> {
     return await this.repository.save(book);
   }
 
   async createAssessments(
-    bookAssessments: BookAssessmentsEntity,
-  ): Promise<BookAssessmentsEntity> {
+    bookAssessments: BookAssessmentsDto,
+  ): Promise<BookAssessmentsDto> {
     return await this.repositoryAssessmentsEntity.save(bookAssessments);
   }
 
-  async findOne(bookId: number): Promise<BookEntity> {
+  async findOne(bookId: number): Promise<BookDto> {
     if (!bookId) throw new Error();
 
-    const response: BookEntity = await this.repository.findOneBy({
+    const response: BookDto = await this.repository.findOneBy({
       id: bookId,
     });
 
@@ -48,7 +51,7 @@ export class AppService {
     abstract,
     author,
     year,
-  }: BookEntity): Promise<void> {
+  }: Partial<UpdateBookDto>): Promise<void> {
     const book = await this.repository.findOneBy({ id });
 
     book.name = name ? name : book.name;
@@ -56,7 +59,7 @@ export class AppService {
     book.author = author ? author : book.author;
     book.year = year ? year : book.year;
 
-    await this.repository.save(book);
+    await this.repository.update(id, book);
   }
 
   async remove(id: number): Promise<void> {

@@ -1,9 +1,9 @@
 import { HttpStatus, Logger } from '@nestjs/common';
-import { Book } from '../src/book/interfaces/book.interface';
+import { BookDto } from '../src/book/dto/book.dto';
 import * as request from 'supertest';
-import { BookAssessments } from '../src/book/interfaces/bookAssessments.interface';
+import { BookAssessmentsDto } from '../src/book/dto/bookAssessments.dto';
 import { StarEnum } from '../src/book/enum/start.enum';
-import { Token } from 'src/auth/interfaces/token.interface';
+import { TokenDto } from 'src/auth/dto/token.dto';
 
 const uri = `http://localhost:3000`;
 
@@ -15,14 +15,14 @@ const getToken = async () => {
       password: '123456',
     });
 
-  const response: Token = responseAuth.body;
+  const response: TokenDto = responseAuth.body;
 
   return `Bearer ${response.access_token}`;
 };
 
 describe('BookController (e2e)', () => {
   describe('/book (POST)', () => {
-    it('it should return a book by id', async () => {
+    it('it should create a book', async () => {
       const responseBook: request.Response = await request(uri)
         .post(`/book`)
         .set({ Authorization: await getToken() })
@@ -40,7 +40,7 @@ describe('BookController (e2e)', () => {
 
       Logger.debug('responseBook: ' + JSON.stringify(responseBook.body));
 
-      const { id, name, author, abstract, year }: Book = responseBook.body;
+      const { id, name, author, abstract, year }: BookDto = responseBook.body;
 
       expect(typeof id).toBe('number');
       expect(typeof name).toBe('string');
@@ -70,7 +70,7 @@ describe('BookController (e2e)', () => {
         .get('/book')
         .set({ Authorization: await getToken() });
 
-      const { id, name, author, abstract }: Book = responseBooks.body[0];
+      const { id, name, author, abstract }: BookDto = responseBooks.body[0];
 
       const responseBook: request.Response = await request(uri)
         .get(`/book/${id}`)
@@ -78,7 +78,7 @@ describe('BookController (e2e)', () => {
 
       Logger.debug('responseBook: ' + JSON.stringify(responseBook.body));
 
-      const book: Book = responseBook.body;
+      const book: BookDto = responseBook.body;
 
       expect(typeof book.id).toBe('number');
       expect(book.name).toEqual(name);
@@ -89,32 +89,34 @@ describe('BookController (e2e)', () => {
   });
 
   describe('/book/assessments (POST)', () => {
-    it('it should return a book by id', async () => {
+    it('it should create assessments', async () => {
       const responseBooks: request.Response = await request(uri)
         .get('/book')
         .set({ Authorization: await getToken() });
 
-      const { id }: Book = responseBooks.body[0];
+      const { id }: BookDto = responseBooks.body[0];
 
       const responseAssessments: request.Response = await request(uri)
         .post(`/book/assessments`)
         .set({ Authorization: await getToken() })
         .send({
-          userId: '2',
+          userId: 2,
           start: 'Two',
           comment: '',
-          book: id,
+          book: { id },
         });
 
-      Logger.debug('responseAssessments: ' + JSON.stringify(responseAssessments.body));
+      Logger.debug(
+        'responseAssessments: ' + JSON.stringify(responseAssessments.body),
+      );
 
-      const { userId, start, comment, book }: BookAssessments =
+      const { userId, start, comment, book }: BookAssessmentsDto =
         responseAssessments.body;
 
-      expect(typeof userId).toBe('string');
+      expect(typeof userId).toBe('number');
       expect(start).toEqual(StarEnum.Two);
       expect(typeof comment).toBe('string');
-      expect(typeof book).toBe('number');
+      expect(typeof book.id).toBe('number');
       expect(HttpStatus.CREATED);
     });
   });

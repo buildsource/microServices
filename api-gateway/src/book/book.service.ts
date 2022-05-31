@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
-import { Book } from './interfaces/book.interface';
+import { BookDto } from './dto/book.dto';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
-import { BookAssessments } from './interfaces/bookAssessments.interface';
+import { BookAssessmentsDto } from './dto/bookAssessments.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BookService implements OnModuleInit, OnModuleDestroy {
@@ -40,25 +41,25 @@ export class BookService implements OnModuleInit, OnModuleDestroy {
     await this.client.close();
   }
 
-  create(createBook: Book): Observable<Book> {
+  create(createBook: BookDto): Observable<BookDto> {
     return this.client.send('create-book', createBook);
   }
 
   createAssessments(
-    createBookAssessments: BookAssessments,
-  ): Observable<BookAssessments> {
+    createBookAssessments: BookAssessmentsDto,
+  ): Observable<BookAssessmentsDto> {
     return this.client.send('create-book-assessments', createBookAssessments);
   }
 
-  findAll(): Observable<Book[]> {
+  findAll(): Observable<BookDto[]> {
     return this.client.send('find-all-book', {});
   }
 
-  findOne(id: number): Observable<Book> {
+  findOne(id: number): Observable<BookDto> {
     return this.client.send('find-book', { id });
   }
 
-  update(payload: Book) {
+  update(payload: Partial<UpdateBookDto>) {
     return this.client.emit('update-book', payload);
   }
 

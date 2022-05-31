@@ -1,8 +1,8 @@
-import { BookAssessmentsEntity } from 'src/entities/bookAssessments.entity';
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
-import { BookEntity } from './entities/book.entity';
+import { BookDto } from './dto/book.dto';
+import { BookAssessmentsDto } from './dto/bookAssessments.dto';
 
 @Controller()
 export class AppController {
@@ -11,12 +11,12 @@ export class AppController {
   private readonly logger = new Logger(AppController.name);
 
   @MessagePattern('find-all-book')
-  async index(): Promise<BookEntity[]> {
+  async index(): Promise<BookDto[]> {
     return this.appService.findAll();
   }
 
   @MessagePattern('create-book')
-  async create(@Payload() { value }: any): Promise<BookEntity> {
+  async create(@Payload() { value }: any): Promise<BookDto> {
     this.logger.log(`Book: ${JSON.stringify(value)}`);
 
     return await this.appService.create(value);
@@ -25,14 +25,14 @@ export class AppController {
   @MessagePattern('create-book-assessments')
   async createAssessments(
     @Payload() { value }: any,
-  ): Promise<BookAssessmentsEntity> {
+  ): Promise<BookAssessmentsDto> {
     this.logger.log(`Book: ${JSON.stringify(value)}`);
 
     return await this.appService.createAssessments(value);
   }
 
   @MessagePattern('find-book')
-  async find(@Payload() data: any): Promise<BookEntity | any> {
+  async find(@Payload() data: any): Promise<BookDto | any> {
     return JSON.stringify(await this.appService.findOne(Number(data.value.id)));
   }
 

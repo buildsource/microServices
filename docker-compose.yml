@@ -18,6 +18,7 @@ services:
       - 8080:8080
     networks:
       - broker_network
+    restart: always
 
 
   zookeeper:
@@ -28,6 +29,7 @@ services:
       - broker_network
     depends_on:
       - keycloak
+    restart: always
 
 
   kafka:
@@ -47,6 +49,7 @@ services:
       - zookeeper
     networks:
       - broker_network
+    restart: always
 
 
   notification-engine:
@@ -58,11 +61,12 @@ services:
     environment:
         NODE_ENV: staging
     ports:
-        - "3002:56337"
+        - "3002:3002"
     depends_on:
       - kafka
     networks:
       - broker_network
+    restart: always
 
   
   book-engine:
@@ -74,11 +78,12 @@ services:
     environment:
         NODE_ENV: staging
     ports:
-        - "3001:56321"
+        - "3001:3001"
     depends_on:
       - notification-engine
     networks:
       - broker_network
+    restart: always
 
 
   api-gateway:
@@ -101,3 +106,4 @@ services:
       - broker_network
     depends_on:
       - book-engine
+    restart: always

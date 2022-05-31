@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
-import { Token } from '../src/auth/interfaces/token.interface';
+import { TokenDto } from '../src/auth/dto/token.dto';
 
 describe('AuthController (e2e)', () => {
   const uri = `http://localhost:3000`;
@@ -14,7 +14,8 @@ describe('AuthController (e2e)', () => {
           password: '123456',
         });
 
-      const { access_token, refresh_token, scope }: Token = responseAuth.body;
+      const { access_token, refresh_token, scope }: TokenDto =
+        responseAuth.body;
 
       expect(typeof access_token).toBe('string');
       expect(typeof refresh_token).toBe('string');

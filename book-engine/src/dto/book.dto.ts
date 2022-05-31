@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumberString } from 'class-validator';
 
-export class Book {
+export class BookDto {
   id: number;
 
   @IsNotEmpty()
