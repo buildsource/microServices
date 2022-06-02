@@ -1,5 +1,19 @@
 # name: Deploy | STG
 
+name: docker-compose-actions-workflow
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: Test
+        # run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
+        run: |
+          docker pusg 272531233375.dkr.ecr.sa-east-1.amazonaws.com/micro-services:latest
+
 # on:
 #   push:
 #     branches:
