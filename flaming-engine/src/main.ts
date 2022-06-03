@@ -12,17 +12,17 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
-          clientId: 'book',
+          clientId: 'flaming',
           brokers: ['172.17.0.1:9092'],
         },
         consumer: {
-          groupId: 'book-consumer',
+          groupId: 'flaming-consumer',
           allowAutoTopicCreation: true,
         },
       },
     },
   );
 
-  await app.listen().then(() => logger.log('book-engine is running'));
+  await app.listen().then(() => logger.log('flaming-engine is running'));
 }
 bootstrap();

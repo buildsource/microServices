@@ -1,7 +1,6 @@
-import { BookEntity } from '../entities/Flaming.entity';
+import { FlamingEntity } from '../entities/flaming.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BookAssessmentsEntity } from 'src/entities/bookAssessments.entity';
 
 @Module({
   imports: [
@@ -11,7 +10,7 @@ import { BookAssessmentsEntity } from 'src/entities/bookAssessments.entity';
       username: 'postgres',
       password: 'docker',
       database: 'user',
-      entities: [BookEntity, BookAssessmentsEntity],
+      entities: [FlamingEntity],
       synchronize: true,
     }),
   ],

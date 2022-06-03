@@ -137,7 +137,7 @@ services:
       NODE_ENV: staging
       PORT: 3006
     ports:
-      - '3005:3005'
+      - '3006:3006'
     networks:
       - broker_network
     depends_on:

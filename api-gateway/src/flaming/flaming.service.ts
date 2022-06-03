@@ -40,7 +40,7 @@ export class FlamingService implements OnModuleInit, OnModuleDestroy {
   }
 
   create(createFlaming: FlamingDto): Observable<FlamingDto> {
-    return this.client.send('create-Flaming', createFlaming);
+    return this.client.send('create-flaming', createFlaming);
   }
 
   findByFilter(): Observable<FlamingDto[]> {
