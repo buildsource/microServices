@@ -5,9 +5,16 @@ import { BookModule } from './book/book.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { HttpLoggerMiddleware } from 'utils/loggerMiddleware';
+import { FlamingModule } from './flaming/flaming.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), NotificationModule, BookModule, AuthModule],
+  imports: [
+    ConfigModule.forRoot(),
+    NotificationModule,
+    BookModule,
+    AuthModule,
+    FlamingModule,
+  ],
   controllers: [AppController],
   providers: [],
   exports: [],

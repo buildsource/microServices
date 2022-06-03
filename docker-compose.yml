@@ -123,5 +123,23 @@ services:
     networks:
       - broker_network
     depends_on:
-      - book-engine
+      - api-gateway
+    restart: always
+
+
+  flaming-engine:
+    build:
+      context: ./flaming-engine
+      dockerfile: Dockerfile.dev
+    container_name: flaming_engine
+    command: yarn start
+    environment:
+      NODE_ENV: staging
+      PORT: 3006
+    ports:
+      - '3005:3005'
+    networks:
+      - broker_network
+    depends_on:
+      - socket
     restart: always
