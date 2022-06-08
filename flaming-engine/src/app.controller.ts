@@ -23,7 +23,7 @@ export class AppController {
 
   @MessagePattern('find-flaming')
   async find(@Payload() data: any): Promise<FlamingDto | any> {
-    return JSON.stringify(await this.appService.findOne(Number(data.value.id)));
+    return JSON.stringify(await this.appService.findOne(data.value.id));
   }
 
   @MessagePattern('update-flaming')
@@ -35,6 +35,6 @@ export class AppController {
 
   @MessagePattern('delete-flaming')
   async remove(@Payload() data: any): Promise<void> {
-    return this.appService.remove(Number(data.value.id));
+    return this.appService.remove(data.value.id);
   }
 }

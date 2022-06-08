@@ -13,6 +13,7 @@ import { FlamingDto } from './dto/flaming.dto';
 import { FlamingService } from './flaming.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdateFlamingDto } from './dto/update-flaming.dto';
+import { ObjectID } from 'typeorm';
 
 @Controller('Flaming')
 export class FlamingController {
@@ -24,36 +25,38 @@ export class FlamingController {
     return this.FlamingService.create(user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findByFilter(): Observable<FlamingDto[]> {
     return this.FlamingService.findByFilter();
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: number): Observable<FlamingDto> {
+  findOne(@Param('id') id: ObjectID): Observable<FlamingDto> {
     return this.FlamingService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(
-    @Param('id') id: number,
-    @Body() { name, abstract, author, year }: Partial<UpdateFlamingDto>,
+    @Param('id') id: ObjectID,
+    @Body()
+    { name, coordinates, val, year, files }: Partial<UpdateFlamingDto>,
   ) {
     return this.FlamingService.update({
       id,
       name,
-      abstract,
-      author,
+      coordinates,
+      val,
       year,
+      files,
     });
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: ObjectID) {
     return this.FlamingService.remove(id);
   }
 }

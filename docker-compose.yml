@@ -5,6 +5,22 @@ networks:
     driver: bridge
 
 services:
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    volumes:
+    #   - ./:/docker-entrypoint-initdb.d
+      - /opt/mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=root
+    networks:
+      - broker_network
+    restart: always
+
   keycloak:
     image: tfsite/microservices_keycloak:latest
     volumes:
@@ -12,10 +28,31 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
-      - DB_VENDOR=h2
       - KEYCLOAK_IMPORT=/realm-export.json
+      - DB_VENDOR=mysql
+      - DB_ADDR=mysql
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=root
     ports:
       - 8080:8080
+    networks:
+      - broker_network
+    depends_on:
+      - mysql
+    restart: always
+
+  mongo:
+    image: mongo
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    volumes:
+      - /home/mongodb:/data/db
+    depends_on:
+      - keycloak
     networks:
       - broker_network
     restart: always
@@ -28,7 +65,7 @@ services:
     networks:
       - broker_network
     depends_on:
-      - keycloak
+      - mongo
     restart: always
 
 

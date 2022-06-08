@@ -3,6 +3,7 @@ import { FlamingDto } from './dto/flaming.dto';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 import { UpdateFlamingDto } from './dto/update-flaming.dto';
+import { ObjectID } from 'typeorm';
 
 @Injectable()
 export class FlamingService implements OnModuleInit, OnModuleDestroy {
@@ -47,7 +48,7 @@ export class FlamingService implements OnModuleInit, OnModuleDestroy {
     return this.client.send('find-filter-flaming', {});
   }
 
-  findOne(id: number): Observable<FlamingDto> {
+  findOne(id: ObjectID): Observable<FlamingDto> {
     return this.client.send('find-flaming', { id });
   }
 
@@ -55,7 +56,7 @@ export class FlamingService implements OnModuleInit, OnModuleDestroy {
     return this.client.emit('update-flaming', payload);
   }
 
-  remove(id: number) {
+  remove(id: ObjectID) {
     return this.client.emit('delete-flaming', { id });
   }
 }

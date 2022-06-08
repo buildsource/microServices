@@ -1,16 +1,21 @@
-import { IsNotEmpty, IsNumberString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumberString } from 'class-validator';
+import { ObjectID } from 'typeorm';
 
 export class FlamingDto {
-  id: number;
+  id: ObjectID;
 
   @IsNotEmpty()
   name: string;
 
   @IsNotEmpty()
-  abstract: string;
+  @IsArray()
+  coordinates: [number, number];
 
   @IsNotEmpty()
-  author: string;
+  val: number;
+
+  @IsNotEmpty()
+  files: string[];
 
   @IsNotEmpty()
   @IsNumberString()
