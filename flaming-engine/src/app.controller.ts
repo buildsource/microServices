@@ -5,7 +5,7 @@ import { FlamingDto } from './dto/flaming.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   private readonly logger = new Logger(AppController.name);
 
@@ -22,19 +22,19 @@ export class AppController {
   }
 
   @MessagePattern('find-flaming')
-  async find(@Payload() data: any): Promise<FlamingDto | any> {
-    return JSON.stringify(await this.appService.findOne(data.value.id));
+  async find(@Payload() { value }: any): Promise<FlamingDto | any> {
+    return JSON.stringify(await this.appService.findOne(value._id));
   }
 
   @MessagePattern('update-flaming')
-  async update(@Payload() data: any): Promise<void> {
-    this.logger.log(`Flaming: ${JSON.stringify(data)}`);
+  async update(@Payload() { value }: any): Promise<void> {
+    this.logger.log(`Flaming: ${JSON.stringify(value)}`);
 
-    await this.appService.update(data.value);
+    await this.appService.update(value);
   }
 
   @MessagePattern('delete-flaming')
-  async remove(@Payload() data: any): Promise<void> {
-    return this.appService.remove(data.value.id);
+  async remove(@Payload() { value }: any): Promise<void> {
+    return this.appService.remove(value._id);
   }
 }

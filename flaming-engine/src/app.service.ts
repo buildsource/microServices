@@ -15,7 +15,7 @@ export class AppService {
   async findByFilter(): Promise<FlamingDto[]> {
     return await this.repository.find({
       order: {
-        id: 'DESC',
+        _id: 'DESC',
       },
     });
   }
@@ -28,36 +28,25 @@ export class AppService {
     }
   }
 
-  async findOne(flamingId: ObjectID): Promise<FlamingDto> {
-    if (!flamingId) throw new Error();
+  async findOne(_id: ObjectID): Promise<FlamingDto> {
+    if (!_id) throw new Error();
 
-    const response: FlamingDto = await this.repository.findOneBy({
-      id: flamingId,
-    });
+    const response: FlamingDto = await this.repository.findOneById(_id);
 
     return response;
   }
 
-  async update({
-    id,
-    name,
-    coordinates,
-    val,
-    year,
-    files,
-  }: Partial<UpdateFlamingDto>): Promise<void> {
-    const flaming = await this.repository.findOneBy({ id });
+  async update(data: Partial<UpdateFlamingDto>): Promise<void> {
+    const flaming = await this.repository.findOneById(data._id);
 
-    flaming.name = name ? name : flaming.name;
-    flaming.coordinates = coordinates ? coordinates : flaming.coordinates;
-    flaming.val = val ? val : flaming.val;
-    flaming.year = year ? year : flaming.year;
-    flaming.files = files ? files : flaming.files;
+    const flamingUpdate: Partial<UpdateFlamingDto> = { ...flaming, ...data };
 
-    await this.repository.update(id, flaming);
+    delete flamingUpdate._id;
+
+    await this.repository.update(data._id, flamingUpdate);
   }
 
-  async remove(id: ObjectID): Promise<void> {
-    await this.repository.delete({ id });
+  async remove(_id: ObjectID): Promise<void> {
+    await this.repository.delete({ _id });
   }
 }

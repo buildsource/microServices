@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "1ad7fe61-bbc9-4c87-9ed9-c813bbf16edb",
 		"name": "Nestjs Microservices",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15051363"
 	},
 	"item": [
 		{
@@ -176,7 +177,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Book 1\",\r\n    \"abstract\": \"abstract\",\r\n    \"author\": \"author\",\r\n    \"year\": \"2022\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Book 5\",\r\n    \"abstract\": \"abstract\",\r\n    \"author\": \"author\",\r\n    \"year\": \"2022\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -190,6 +191,43 @@
 							],
 							"path": [
 								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAssessments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"2\",\r\n    \"start\": \"Two\",\r\n    \"comment\": \"\",\r\n    \"book\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/book/assessments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"book",
+								"assessments"
 							]
 						}
 					},
@@ -290,6 +328,176 @@
 			]
 		},
 		{
+			"name": "Flaming",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Claudinei de Lima\",\r\n    \"document\":\"01324313005\",\r\n    \"coordinates\":[-27.4358149, -48.4048583],\r\n    \"val\": \"100\",\r\n    \"year\": \"1995-12-17T03:24:00\",\r\n    \"local\": [\"Hotels\"],\r\n    \"schedules\":[\r\n        {\r\n            \"week\": \"Monday\",\r\n            \"hour\": [8,19]\r\n        }\r\n    ],\r\n    \"sex\":\"Heterossexual\",\r\n    \"genre\":\"M\",\r\n    \"files\": [\r\n        \"https://i.pinimg.com/564x/2d/67/0f/2d670f63ca309a8f140c8fb79258aca0.jpg\",\r\n        \"https://i.pinimg.com/236x/4e/68/02/4e680240f4bb6378c314353590ddfe64.jpg\",\r\n        \"https://i.pinimg.com/originals/ee/5b/04/ee5b04afc85096c0ff31133fcb20e3d2.png\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flaming",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flaming"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"local\": [\"Hotels\",\"Motels\",\"Home\",\"WithLocation\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flaming/62a13ed2bb5a938686f73c28",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flaming",
+								"62a13ed2bb5a938686f73c28"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/book/14",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"book",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByFilter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flaming",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flaming"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flaming/62a0bc2ccc754b16a1af56d3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flaming",
+								"62a0bc2ccc754b16a1af56d3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Notification",
 			"item": [
 				{
@@ -379,6 +587,7 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
 									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);"
 								],
 								"type": "text/javascript"
@@ -393,7 +602,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"55991657275\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"username\": \"claudinei\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -412,8 +621,96 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Login KeyCloak",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "micro-services",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "8yryI8DjOZZAEUtBSwVtvHMBpOKB13oM",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "claudinei",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://host.docker.internal:8080/auth/realms/microservices/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"host",
+								"docker",
+								"internal"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"realms",
+								"microservices",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Init",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -439,7 +736,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:8999",
+			"value": "http://localhost:3000",
 			"type": "string"
 		},
 		{

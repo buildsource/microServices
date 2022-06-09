@@ -48,15 +48,15 @@ export class FlamingService implements OnModuleInit, OnModuleDestroy {
     return this.client.send('find-filter-flaming', {});
   }
 
-  findOne(id: ObjectID): Observable<FlamingDto> {
-    return this.client.send('find-flaming', { id });
+  findOne(_id: ObjectID): Observable<FlamingDto> {
+    return this.client.send('find-flaming', { _id });
   }
 
   update(payload: Partial<UpdateFlamingDto>) {
     return this.client.emit('update-flaming', payload);
   }
 
-  remove(id: ObjectID) {
-    return this.client.emit('delete-flaming', { id });
+  remove(_id: ObjectID) {
+    return this.client.emit('delete-flaming', { _id });
   }
 }

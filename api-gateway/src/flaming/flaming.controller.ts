@@ -17,7 +17,7 @@ import { ObjectID } from 'typeorm';
 
 @Controller('Flaming')
 export class FlamingController {
-  constructor(private FlamingService: FlamingService) {}
+  constructor(private FlamingService: FlamingService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -32,31 +32,26 @@ export class FlamingController {
   }
 
   // @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: ObjectID): Observable<FlamingDto> {
-    return this.FlamingService.findOne(id);
+  @Get(':_id')
+  findOne(@Param('_id') _id: ObjectID): Observable<FlamingDto> {
+    return this.FlamingService.findOne(_id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id')
+  @Put(':_id')
   update(
-    @Param('id') id: ObjectID,
+    @Param('_id') _id: ObjectID,
     @Body()
-    { name, coordinates, val, year, files }: Partial<UpdateFlamingDto>,
+    data: Partial<UpdateFlamingDto>,
   ) {
-    return this.FlamingService.update({
-      id,
-      name,
-      coordinates,
-      val,
-      year,
-      files,
-    });
+    data._id = _id;
+
+    return this.FlamingService.update(data);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: ObjectID) {
-    return this.FlamingService.remove(id);
+  @Delete(':_id')
+  remove(@Param('_id') _id: ObjectID) {
+    return this.FlamingService.remove(_id);
   }
 }
