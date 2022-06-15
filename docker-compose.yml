@@ -5,32 +5,31 @@ networks:
     driver: bridge
 
 services:
-  mysql:
-    image: mysql
-    ports:
-      - 3306:3306
-    volumes:
-    #   - ./:/docker-entrypoint-initdb.d
-      - /opt/mysql_data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=keycloak
-      - MYSQL_USER=keycloak
-      - MYSQL_PASSWORD=root
-    networks:
-      - broker_network
-    restart: always
+  # mysql:
+  #   image: mysql
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #   #   - ./:/docker-entrypoint-initdb.d
+  #     - /opt/mysql_data:/var/lib/mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=root
+  #     - MYSQL_DATABASE=keycloak
+  #     - MYSQL_USER=keycloak
+  #     - MYSQL_PASSWORD=root
+  #   networks:
+  #     - broker_network
+  #   restart: always
 
   keycloak:
-    image: tfsite/microservices_keycloak:latest
+    image: jboss/keycloak:latest
     volumes:
-      - ./realm-export.json:/realm-export.json
+      - ./realm-export.json:/opt/jboss/keycloak/data-keycloak.json
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/realm-export.json
-      - DB_VENDOR=mysql
-      - DB_ADDR=mysql
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/data-keycloak.json
+      - DB_VENDOR=H2
       - DB_DATABASE=keycloak
       - DB_USER=keycloak
       - DB_PASSWORD=root
@@ -38,8 +37,6 @@ services:
       - 8080:8080
     networks:
       - broker_network
-    depends_on:
-      - mysql
     restart: always
 
   mongo:
