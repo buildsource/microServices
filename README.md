@@ -56,6 +56,9 @@ cd /opt/jboss/keycloak &&
     -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=data-keycloak.json;
 ```
 
+### Create user attribute
+<!-- https://stackoverflow.com/questions/32678883/keycloak-retrieve-custom-attributes-to-keycloakprincipal -->
+
 ## More info
 
 [claudinei-de-lima@hotmail.com](claudinei-de-lima@hotmail.com).

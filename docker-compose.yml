@@ -5,26 +5,36 @@ networks:
     driver: bridge
 
 services:
-  # mysql:
-  #   image: mysql
-  #   ports:
-  #     - 3306:3306
-  #   volumes:
-  #   #   - ./:/docker-entrypoint-initdb.d
-  #     - /opt/mysql_data:/var/lib/mysql
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=root
-  #     - MYSQL_DATABASE=keycloak
-  #     - MYSQL_USER=keycloak
-  #     - MYSQL_PASSWORD=root
-  #   networks:
-  #     - broker_network
-  #   restart: always
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    volumes:
+    #   - ./:/docker-entrypoint-initdb.d
+      - /opt/mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=root
+    networks:
+      - broker_network
+    restart: always
+  
+  redis:
+    image: redis:latest
+    ports:
+      - 5007:6379
+    depends_on:
+      - mysql
+    networks:
+      - broker_network
+    restart: always
 
   keycloak:
     image: jboss/keycloak:latest
     volumes:
-      - ./realm-export.json:/opt/jboss/keycloak/data-keycloak.json
+      - ./data-keycloak.json:/opt/jboss/keycloak/data-keycloak.json
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
@@ -35,6 +45,8 @@ services:
       - DB_PASSWORD=root
     ports:
       - 8080:8080
+    depends_on:
+      - redis
     networks:
       - broker_network
     restart: always
@@ -110,7 +122,9 @@ services:
     container_name: book_engine
     command: yarn start
     environment:
-        NODE_ENV: staging
+      NODE_ENV: staging
+      REDIS_BASE_URL: 172.17.0.1
+      REDIS_PORT: 5007
     ports:
         - "3001:3001"
     depends_on:

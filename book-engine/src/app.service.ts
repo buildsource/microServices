@@ -1,15 +1,17 @@
 import { BookAssessmentsEntity } from 'src/entities/bookAssessments.entity';
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BookEntity } from './entities/book.entity';
 import { BookDto } from './dto/book.dto';
 import { BookAssessmentsDto } from './dto/bookAssessments.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AppService {
   constructor(
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @InjectRepository(BookEntity)
     private repository: Repository<BookEntity>,
     @InjectRepository(BookAssessmentsEntity)
@@ -17,15 +19,23 @@ export class AppService {
   ) {}
 
   async findAll(): Promise<BookDto[]> {
-    return await this.repository.find({
+    const cache = await this.cacheManager.get<BookEntity[]>('books');
+
+    if (cache) return cache;
+
+    const response = await this.repository.find({
       order: {
         id: 'DESC',
       },
       relations: ['bookAssessments'],
     });
+
+    return response;
   }
 
   async create(book: BookDto): Promise<BookDto> {
+    await this.cacheManager.set('books', book);
+
     return await this.repository.save(book);
   }
 
@@ -58,6 +68,8 @@ export class AppService {
     book.abstract = abstract ? abstract : book.abstract;
     book.author = author ? author : book.author;
     book.year = year ? year : book.year;
+
+    await this.cacheManager.set('books', book);
 
     await this.repository.update(id, book);
   }
