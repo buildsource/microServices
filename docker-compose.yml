@@ -143,7 +143,8 @@ services:
     environment:
       NODE_ENV: staging
       PORT: 3000
-      KEY_CLOAK_URI: http://172.17.0.1:8080/auth/realms/microservices/protocol/openid-connect/token
+      KEY_CLOAK_URI: http://host.docker.internal:8080
+      KEY_CLOAK_REALM: microservices
       KEY_CLOAK_CLIENT_ID: micro-services
       KEY_CLOAK_GRANT_TYPE: password
       KEY_CLOAK_CLIENT_SECRET: WJ7wDl3lp4qottXd2w4x8hWNHB9A6rHd

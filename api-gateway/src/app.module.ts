@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { HttpLoggerMiddleware } from 'utils/loggerMiddleware';
 import { FlamingModule } from './flaming/flaming.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { FlamingModule } from './flaming/flaming.module';
     BookModule,
     AuthModule,
     FlamingModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [],

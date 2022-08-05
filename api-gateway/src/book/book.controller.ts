@@ -11,9 +11,11 @@ import {
 import { Observable } from 'rxjs';
 import { BookDto } from './dto/book.dto';
 import { BookService } from './book.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BookAssessmentsDto } from './dto/bookAssessments.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('book')
 export class BookController {
@@ -30,7 +32,8 @@ export class BookController {
     return this.bookService.createAssessments(assessments);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('default-roles-microservices')
   @Get()
   findAll(): Observable<BookDto[]> {
     return this.bookService.findAll();

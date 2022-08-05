@@ -11,13 +11,13 @@ import {
 import { Observable } from 'rxjs';
 import { FlamingDto } from './dto/flaming.dto';
 import { FlamingService } from './flaming.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateFlamingDto } from './dto/update-flaming.dto';
 import { ObjectID } from 'typeorm';
 
 @Controller('Flaming')
 export class FlamingController {
-  constructor(private FlamingService: FlamingService) { }
+  constructor(private FlamingService: FlamingService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()

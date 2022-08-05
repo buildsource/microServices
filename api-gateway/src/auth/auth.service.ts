@@ -11,7 +11,7 @@ export class AuthService {
     return await this.http
 
       .post(
-        process.env.KEY_CLOAK_URI,
+        `${process.env.KEY_CLOAK_URI}/auth/realms/microservices/protocol/openid-connect/token`,
         new URLSearchParams({
           client_id: process.env.KEY_CLOAK_CLIENT_ID,
           client_secret: process.env.KEY_CLOAK_CLIENT_SECRET,
